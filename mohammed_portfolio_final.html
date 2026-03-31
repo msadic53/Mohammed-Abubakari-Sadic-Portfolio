@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mohammed Abubakari Sadic — Cybersecurity & ML</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Epilogue:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black:   #020305;
+  --dark:    #070a0f;
+  --panel:   #0b0f17;
+  --panel2:  #0e1520;
+  --border:  rgba(0,255,102,0.1);
+  --border2: rgba(0,255,102,0.06);
+  --green:   #00ff66;
+  --green2:  #00cc52;
+  --green-dim: rgba(0,255,102,0.5);
+  --white:   #f0f4f8;
+  --grey:    #8899aa;
+  --grey2:   #445566;
+  --red:     #ff4455;
+  --amber:   #ffaa00;
+  --blue:    #00aaff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* scanline overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9000; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.07) 2px,
+    rgba(0,0,0,0.07) 4px
+  );
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 5vw;
+  background: rgba(2,3,5,0.9); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border2);
+}
+.logo {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--green); letter-spacing: 0.05em; text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.logo-bracket { color: var(--grey2); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--grey); text-decoration: none; letter-spacing: 0.08em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--green); }
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--black); background: var(--green);
+  padding: 0.5rem 1.3rem; border-radius: 3px;
+  text-decoration: none; letter-spacing: 0.06em; font-weight: 600;
+  transition: all 0.2s; box-shadow: 0 0 20px rgba(0,255,102,0.25);
+}
+.nav-cta:hover { background: #33ff88; box-shadow: 0 0 30px rgba(0,255,102,0.5); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 0;
+  padding: 8rem 5vw 4rem;
+  position: relative; overflow: hidden;
+}
+
+/* animated grid background */
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(var(--border2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border2) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-glow {
+  position: absolute; z-index: 0;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,255,102,0.06) 0%, transparent 70%);
+  top: 50%; right: 5%; transform: translateY(-50%);
+  pointer-events: none; animation: glow-breathe 6s ease-in-out infinite;
+}
+@keyframes glow-breathe {
+  0%,100% { transform: translateY(-50%) scale(1); opacity: 0.7; }
+  50%      { transform: translateY(-50%) scale(1.1); opacity: 1; }
+}
+
+.hero-left { position: relative; z-index: 2; }
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--green); letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 1.8rem; display: flex; align-items: center; gap: 0.8rem;
+  animation: fadein 0.6s ease both;
+}
+.eyebrow-slash { color: var(--grey2); }
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 7vw, 7.5rem);
+  line-height: 0.92; letter-spacing: 0.01em;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  animation: fadein 0.6s 0.1s ease both;
+}
+h1 .name-green { color: var(--green); }
+h1 .name-dim { color: var(--grey2); }
+
+.hero-tagline {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.95rem;
+  color: var(--grey); line-height: 1.7; margin-bottom: 2.5rem;
+  max-width: 430px; font-weight: 300;
+  animation: fadein 0.6s 0.2s ease both;
+}
+.hero-tagline em { color: var(--white); font-style: normal; font-weight: 400; }
+
+.hero-pills {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 3rem;
+  animation: fadein 0.6s 0.3s ease both;
+}
+.pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+  padding: 0.35rem 0.9rem; border-radius: 2px;
+  border: 1px solid; letter-spacing: 0.08em; text-transform: uppercase;
+  transition: all 0.2s;
+}
+.pill-g { color: var(--green); border-color: rgba(0,255,102,0.25); background: rgba(0,255,102,0.05); }
+.pill-r { color: var(--red);   border-color: rgba(255,68,85,0.25);  background: rgba(255,68,85,0.05); }
+.pill-a { color: var(--amber); border-color: rgba(255,170,0,0.25);  background: rgba(255,170,0,0.05); }
+.pill-b { color: var(--blue);  border-color: rgba(0,170,255,0.25);  background: rgba(0,170,255,0.05); }
+.pill:hover { transform: translateY(-2px); filter: brightness(1.3); }
+
+.hero-btns {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  animation: fadein 0.6s 0.4s ease both;
+}
+.btn-primary {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  padding: 0.85rem 2rem; background: var(--green); color: var(--black);
+  border: none; border-radius: 3px; text-decoration: none; font-weight: 600;
+  letter-spacing: 0.06em; transition: all 0.2s;
+  box-shadow: 0 0 24px rgba(0,255,102,0.25);
+}
+.btn-primary:hover { background: #33ff88; box-shadow: 0 0 40px rgba(0,255,102,0.45); transform: translateY(-2px); }
+.btn-ghost {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  padding: 0.85rem 2rem; background: transparent; color: var(--grey);
+  border: 1px solid var(--border); border-radius: 3px;
+  text-decoration: none; letter-spacing: 0.06em; transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+
+/* HERO RIGHT — terminal window */
+.hero-right { position: relative; z-index: 2; animation: fadein 0.7s 0.3s ease both; }
+.terminal {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,255,102,0.08), 0 40px 80px rgba(0,0,0,0.6);
+}
+.terminal-bar {
+  background: var(--panel2); padding: 0.8rem 1.2rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  border-bottom: 1px solid var(--border2);
+}
+.tbar-dot { width: 10px; height: 10px; border-radius: 50%; }
+.tbar-red    { background: #ff5f57; }
+.tbar-yellow { background: #febc2e; }
+.tbar-green  { background: #28c840; }
+.tbar-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--grey2); margin-left: auto; margin-right: auto; letter-spacing: 0.05em;
+}
+.terminal-body { padding: 1.6rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 2; }
+.t-prompt { color: var(--green); }
+.t-cmd    { color: var(--white); }
+.t-out    { color: var(--grey); padding-left: 1.2rem; }
+.t-key    { color: var(--green); }
+.t-val    { color: var(--amber); }
+.t-comment{ color: var(--grey2); }
+.t-red    { color: var(--red); }
+.t-blue   { color: var(--blue); }
+.t-blank  { display: block; height: 0.8rem; }
+.t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 2px; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* HERO STATS */
+.hero-stats-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border2);
+  margin-top: 5rem; position: relative; z-index: 2;
+  grid-column: 1 / -1;
+  animation: fadein 0.7s 0.5s ease both;
+}
+.hstat {
+  padding: 2rem 0; text-align: center;
+  border-right: 1px solid var(--border2);
+}
+.hstat:last-child { border-right: none; }
+.hstat-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem;
+  color: var(--green); line-height: 1; letter-spacing: 0.02em;
+}
+.hstat-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--grey2); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-top: 0.3rem;
+}
+
+@keyframes fadein { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── DIVIDER ── */
+hr { border: none; border-top: 1px solid var(--border2); }
+
+/* ── SECTION SHELL ── */
+.section { padding: 7rem 5vw; max-width: 1280px; margin: 0 auto; }
+.sec-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--green); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.75rem;
+}
+.sec-label::before { content:''; width: 20px; height: 1px; background: var(--green); }
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 4vw, 4rem); letter-spacing: 0.02em;
+  color: var(--white); line-height: 1; margin-bottom: 0.6rem;
+}
+.sec-title span { color: var(--green); }
+.sec-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--grey); max-width: 480px; line-height: 1.8; }
+
+/* ── ABOUT ── */
+#about .about-grid {
+  display: grid; grid-template-columns: 3fr 2fr;
+  gap: 6rem; margin-top: 4rem; align-items: start;
+}
+.about-body p {
+  font-size: 1.02rem; color: var(--grey); line-height: 1.85;
+  margin-bottom: 1.3rem; font-weight: 300;
+}
+.about-body p strong { color: var(--white); font-weight: 500; }
+.about-body p em { color: var(--green); font-style: normal; }
+
+.skill-group { margin-bottom: 1.8rem; }
+.skill-group-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--green); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.skill-group-title::after { content:''; flex:1; height:1px; background: var(--border); }
+.skill-bars { display: flex; flex-direction: column; gap: 0.7rem; }
+.sbar-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.sbar-name { font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--grey); min-width: 110px; }
+.sbar-track { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.sbar-fill { height: 100%; background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(0.16,1,0.3,1); }
+.sbar-fill.loaded { transform: scaleX(1); }
+.sbar-pct { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--green2); min-width: 30px; text-align: right; }
+
+/* ── PROJECTS ── */
+#projects { padding: 7rem 5vw; max-width: 1280px; margin: 0 auto; }
+.filter-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 2.5rem 0; }
+.filt {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  padding: 0.4rem 1rem; border: 1px solid var(--border);
+  background: transparent; color: var(--grey); border-radius: 2px;
+  cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase;
+  transition: all 0.2s;
+}
+.filt.active, .filt:hover { background: var(--green); color: var(--black); border-color: var(--green); box-shadow: 0 0 16px rgba(0,255,102,0.2); }
+
+.pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border2); border: 1px solid var(--border2); border-radius: 6px; overflow: hidden; }
+.pcard {
+  background: var(--panel); padding: 2rem;
+  transition: background 0.25s;
+  display: flex; flex-direction: column; position: relative; overflow: hidden;
+}
+.pcard::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--green); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.pcard:hover { background: var(--panel2); }
+.pcard:hover::after { transform: scaleX(1); }
+.pcard.featured { grid-column: span 2; }
+
+.pcard-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--grey2); letter-spacing: 0.1em; margin-bottom: 1.5rem;
+}
+.pcard-cat {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.63rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.25rem 0.7rem; border-radius: 2px; border: 1px solid;
+  display: inline-block; margin-bottom: 1.2rem; width: fit-content;
+}
+.cat-cyber { color: var(--green); border-color: rgba(0,255,102,0.25); background: rgba(0,255,102,0.06); }
+.cat-ml    { color: var(--blue);  border-color: rgba(0,170,255,0.25);  background: rgba(0,170,255,0.06); }
+.cat-data  { color: var(--amber); border-color: rgba(255,170,0,0.25);  background: rgba(255,170,0,0.06); }
+.cat-edtech { color: #a78bfa; border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.06); }
+/* in-progress pulse */
+.badge-live {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  color: var(--amber); background: rgba(255,170,0,0.08);
+  border: 1px solid rgba(255,170,0,0.25); border-radius: 2px;
+  padding: 0.22rem 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 1rem; width: fit-content;
+}
+.badge-live::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--amber); animation: blink 1.2s ease-in-out infinite;
+}
+
+.pcard-title {
+  font-family: 'Epilogue', sans-serif; font-weight: 700; font-size: 1.05rem;
+  color: var(--white); line-height: 1.35; margin-bottom: 0.8rem;
+}
+.pcard-desc { font-size: 0.85rem; color: var(--grey); line-height: 1.75; margin-bottom: 1.3rem; flex: 1; }
+.pcard-result {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--green); background: rgba(0,255,102,0.06);
+  border-left: 2px solid var(--green); padding: 0.5rem 0.8rem;
+  border-radius: 0 3px 3px 0; margin-bottom: 1.3rem;
+}
+.pcard-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+.ptag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  padding: 0.18rem 0.55rem; border-radius: 2px;
+  background: var(--panel2); border: 1px solid var(--border);
+  color: var(--grey2); letter-spacing: 0.05em;
+}
+.pcard-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--green); text-decoration: none; letter-spacing: 0.05em;
+  display: inline-flex; align-items: center; gap: 0.4rem; margin-top: auto;
+  transition: gap 0.2s;
+}
+.pcard-link:hover { gap: 0.7rem; }
+
+/* ── IMPACT ── */
+#impact { padding: 7rem 5vw; border-top: 1px solid var(--border2); }
+#impact .inner { max-width: 1280px; margin: 0 auto; }
+.impact-2col { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; margin-top: 4rem; align-items: start; }
+.impact-left { position: sticky; top: 8rem; }
+.impact-left .big-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 7rem; color: var(--green);
+  line-height: 1; opacity: 0.15; letter-spacing: 0.02em;
+}
+.impact-left .big-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--grey); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-top: -0.5rem;
+}
+.impact-list { display: flex; flex-direction: column; }
+.iitem {
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 2rem; padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border2);
+  transition: background 0.2s;
+}
+.iitem:first-child { border-top: 1px solid var(--border2); }
+.iitem-year {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--green); letter-spacing: 0.08em; padding-top: 4px;
+}
+.iitem-title {
+  font-family: 'Epilogue', sans-serif; font-weight: 700; font-size: 1rem;
+  color: var(--white); margin-bottom: 0.5rem; line-height: 1.3;
+}
+.iitem-desc { font-size: 0.87rem; color: var(--grey); line-height: 1.75; margin-bottom: 0.9rem; }
+.iitem-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--green2); background: rgba(0,255,102,0.07);
+  border: 1px solid rgba(0,255,102,0.15); border-radius: 2px;
+  padding: 0.25rem 0.7rem; display: inline-block; letter-spacing: 0.08em;
+}
+
+/* ── CERTS ── */
+#certs { padding: 7rem 5vw; max-width: 1280px; margin: 0 auto; }
+.cert-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border2); border: 1px solid var(--border2); border-radius: 6px; overflow: hidden; margin-top: 3rem; }
+.ctile {
+  background: var(--panel); padding: 1.6rem;
+  transition: background 0.2s; cursor: default;
+}
+.ctile:hover { background: var(--panel2); }
+.ctile-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+.ctile-name { font-size: 0.85rem; font-weight: 600; color: var(--white); line-height: 1.4; margin-bottom: 0.4rem; }
+.ctile-org { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--grey2); letter-spacing: 0.04em; }
+
+/* ── CONTACT ── */
+#contact {
+  padding: 7rem 5vw; border-top: 1px solid var(--border2);
+  text-align: center; position: relative; overflow: hidden;
+}
+.contact-glow {
+  position: absolute; width: 800px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0,255,102,0.04) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.contact-inner { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+.contact-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 6vw, 6rem); letter-spacing: 0.01em;
+  color: var(--white); line-height: 0.95; margin-bottom: 1.5rem;
+}
+.contact-headline span { color: var(--green); }
+.contact-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--grey); line-height: 1.8; margin-bottom: 3rem;
+}
+.contact-block {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 6px; padding: 2.5rem;
+  position: relative; overflow: hidden;
+}
+.contact-block::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.contact-line {
+  font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; margin-bottom: 1rem;
+}
+.cl-key { color: var(--grey2); font-size: 0.7rem; }
+.cl-val { color: var(--white); font-size: 0.9rem; text-decoration: none; transition: color 0.2s; }
+.cl-val:hover { color: var(--green); }
+.cl-val.em { color: var(--green); }
+.contact-socials { display: flex; gap: 0.8rem; justify-content: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border2); }
+.csoc {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  padding: 0.55rem 1.2rem; border: 1px solid var(--border);
+  color: var(--grey); text-decoration: none; border-radius: 3px;
+  letter-spacing: 0.06em; transition: all 0.2s;
+}
+.csoc:hover { border-color: var(--green); color: var(--green); background: rgba(0,255,102,0.05); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 1.8rem 5vw; border-top: 1px solid var(--border2);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--grey2);
+  letter-spacing: 0.06em;
+}
+.footer-status { display: flex; align-items: center; gap: 0.5rem; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease-in-out infinite; }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.reveal.on { opacity: 1; transform: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  #hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .pgrid { grid-template-columns: 1fr 1fr; }
+  .pcard.featured { grid-column: span 1; }
+  .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  #about .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .impact-2col { grid-template-columns: 1fr; gap: 2rem; }
+  .impact-left { position: static; }
+}
+@media (max-width: 640px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .section, #projects, #certs, #impact, #contact { padding: 5rem 1.5rem; }
+  #hero { padding: 6rem 1.5rem 3rem; }
+  .pgrid { grid-template-columns: 1fr; }
+  .cert-grid { grid-template-columns: 1fr 1fr; }
+  .hero-stats-bar { grid-template-columns: repeat(2, 1fr); }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">
+    <span class="logo-bracket">[</span>MAS<span class="logo-bracket">]</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#impact">impact</a></li>
+    <li><a href="#certs">certs</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <a href="mailto:abubakam@andrew.cmu.edu" class="nav-cta">hire_me()</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-slash">//</span>
+      MSc IT · Carnegie Mellon University Africa
+    </div>
+
+    <h1>
+      <span class="name-dim">Mohammed</span><br/>
+      <span class="name-green">Abubakari</span><br/>
+      Sadic
+    </h1>
+
+    <p class="hero-tagline">
+      <em>Cybersecurity</em> engineer & <em>ML practitioner</em> —<br/>
+      building systems that are secure, intelligent,<br/>
+      and shaped by human purpose.
+    </p>
+
+    <div class="hero-pills">
+      <span class="pill pill-g">Cybersecurity</span>
+      <span class="pill pill-b">Applied ML</span>
+      <span class="pill pill-a">Data Analytics</span>
+      <span class="pill pill-r">Statistical Inference</span>
+      <span class="pill" style="color:#a78bfa;border-color:rgba(167,139,250,0.25);background:rgba(167,139,250,0.06);">EdTech</span>
+    </div>
+
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">view_projects()</a>
+      <a href="#contact" class="btn-ghost">get_in_touch()</a>
+    </div>
+  </div>
+
+  <!-- Terminal -->
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="tbar-dot tbar-red"></div>
+        <div class="tbar-dot tbar-yellow"></div>
+        <div class="tbar-dot tbar-green"></div>
+        <span class="tbar-title">mas@cmu-africa ~ profile.py</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">$</span> <span class="t-cmd">python profile.py</span></div>
+        <span class="t-blank"></span>
+        <div><span class="t-comment"># Loading Mohammed Abubakari Sadic...</span></div>
+        <span class="t-blank"></span>
+        <div><span class="t-key">name</span>       <span class="t-comment">=</span> <span class="t-val">"Mohammed Abubakari Sadic"</span></div>
+        <div><span class="t-key">role</span>       <span class="t-comment">=</span> <span class="t-val">"Cybersecurity + ML Engineer"</span></div>
+        <div><span class="t-key">university</span> <span class="t-comment">=</span> <span class="t-val">"CMU Africa"</span></div>
+        <div><span class="t-key">degree</span>     <span class="t-comment">=</span> <span class="t-val">"MSc Information Technology"</span></div>
+        <span class="t-blank"></span>
+        <div><span class="t-key">passions</span>   <span class="t-comment">= [</span></div>
+        <div><span class="t-out t-blue">"cybersecurity"</span><span class="t-comment">,</span></div>
+        <div><span class="t-out t-blue">"applied_ML"</span><span class="t-comment">,</span></div>
+        <div><span class="t-out t-blue">"edtech"</span><span class="t-comment">,</span></div>
+        <div><span class="t-out t-blue">"community_dev"</span></div>
+        <div><span class="t-comment">]</span></div>
+        <span class="t-blank"></span>
+        <div><span class="t-key">impact</span>     <span class="t-comment">=</span> <span class="t-val">"3,000+ students reached"</span></div>
+        <div><span class="t-key">status</span>     <span class="t-comment">=</span> <span class="t-red">"open_to_opportunities"</span></div>
+        <span class="t-blank"></span>
+        <div><span class="t-prompt">$</span> <span class="t-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="hero-stats-bar">
+    <div class="hstat">
+      <div class="hstat-num">6+</div>
+      <div class="hstat-label">Projects</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">8+</div>
+      <div class="hstat-label">Certifications</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">3K+</div>
+      <div class="hstat-label">Students Reached</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">R²=.90</div>
+      <div class="hstat-label">Best Model Score</div>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="sec-label">about.me</div>
+  <h2 class="sec-title">Secure systems.<br/><span>Intelligent models.</span></h2>
+
+  <div class="about-grid reveal">
+    <div class="about-body">
+      <p>
+        I'm <strong>Mohammed Abubakari Sadic</strong>, an MSc IT student at <strong>Carnegie Mellon University Africa</strong> concentrating in <em>Cybersecurity and Applied Machine Learning</em>. My work lives at the intersection of threat detection, predictive modeling, and data-driven decision-making.
+      </p>
+      <p>
+        Technically, I work across the full ML pipeline — from <strong>data engineering and statistical inference</strong> through to model deployment and explainability using SHAP. I approach security problems with the same rigor: understanding adversarial behavior through data, building resilient systems, and communicating risk clearly.
+      </p>
+      <p>
+        Before CMU Africa, I spent three years as a <strong>Teaching Fellow with Lead For Ghana</strong> — bringing ICT and STEM education to underserved communities across Tamale. That experience grounds everything I build: technology should serve people.
+      </p>
+      <p>
+        I'm deeply passionate about <em>community development</em> and <em>educational technology</em>. I believe EdTech is one of the most powerful levers for equity in Africa — and I'm actively building at that intersection. My current research at CMU Africa investigates how <strong>learning analytics can be redesigned for African higher education</strong> contexts, accounting for infrastructure gaps, cultural norms, and data privacy realities that Global North tools routinely ignore.
+      </p>
+    </div>
+
+    <div>
+      <div class="skill-group reveal" style="transition-delay:0.1s">
+        <div class="skill-group-title">ML & Data Science</div>
+        <div class="skill-bars">
+          <div class="sbar-row"><span class="sbar-name">Scikit-learn</span><div class="sbar-track"><div class="sbar-fill" style="width:88%"></div></div><span class="sbar-pct">88%</span></div>
+          <div class="sbar-row"><span class="sbar-name">Python / Pandas</span><div class="sbar-track"><div class="sbar-fill" style="width:92%"></div></div><span class="sbar-pct">92%</span></div>
+          <div class="sbar-row"><span class="sbar-name">SHAP / XAI</span><div class="sbar-track"><div class="sbar-fill" style="width:80%"></div></div><span class="sbar-pct">80%</span></div>
+          <div class="sbar-row"><span class="sbar-name">TensorFlow</span><div class="sbar-track"><div class="sbar-fill" style="width:72%"></div></div><span class="sbar-pct">72%</span></div>
+          <div class="sbar-row"><span class="sbar-name">StatsModels</span><div class="sbar-track"><div class="sbar-fill" style="width:85%"></div></div><span class="sbar-pct">85%</span></div>
+        </div>
+      </div>
+
+      <div class="skill-group reveal" style="transition-delay:0.2s">
+        <div class="skill-group-title">Cybersecurity</div>
+        <div class="skill-bars">
+          <div class="sbar-row"><span class="sbar-name">Risk Analysis</span><div class="sbar-track"><div class="sbar-fill" style="width:78%"></div></div><span class="sbar-pct">78%</span></div>
+          <div class="sbar-row"><span class="sbar-name">Threat Detection</span><div class="sbar-track"><div class="sbar-fill" style="width:74%"></div></div><span class="sbar-pct">74%</span></div>
+          <div class="sbar-row"><span class="sbar-name">Linux / Unix</span><div class="sbar-track"><div class="sbar-fill" style="width:82%"></div></div><span class="sbar-pct">82%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section" style="padding-bottom:0">
+    <div class="sec-label">selected_work</div>
+    <h2 class="sec-title">Projects &amp; <span>Research</span></h2>
+    <p class="sec-sub">Applied ML, data analytics, statistical inference — built with real data, real impact.</p>
+  </div>
+
+  <div class="section" style="padding-top:2rem">
+    <div class="filter-row reveal">
+      <button class="filt active" onclick="fp('all',this)">all</button>
+      <button class="filt" onclick="fp('ml',this)">applied ML</button>
+      <button class="filt" onclick="fp('data',this)">data analytics</button>
+      <button class="filt" onclick="fp('cyber',this)">cybersecurity</button>
+      <button class="filt" onclick="fp('comm',this)">community data</button>
+      <button class="filt" onclick="fp('edtech',this)">edtech</button>
+    </div>
+
+    <div class="pgrid" id="pgrid">
+
+      <!-- CURRENT RESEARCH — FEATURED -->
+      <div class="pcard featured reveal" data-cat="edtech" style="grid-column: span 3; background: linear-gradient(135deg, var(--panel) 60%, rgba(167,139,250,0.04));">
+        <div class="pcard-num">// 00 &nbsp;<span style="color:var(--amber);font-size:0.6rem;letter-spacing:0.1em;">IN PROGRESS</span></div>
+        <div style="display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.2rem;">
+          <div class="pcard-cat cat-edtech" style="margin:0;">EdTech · Learning Analytics</div>
+          <div class="badge-live">Live Research · CMU Africa · 2026</div>
+        </div>
+        <div class="pcard-title" style="font-size:1.25rem;">Learning Analytics for African Higher Education: A Student Performance Dashboard for LMS</div>
+        <p class="pcard-desc" style="max-width:780px;">
+          Analysing 830,000+ Moodle clickstream events from the University of KwaZulu-Natal (ISTN101, 2021) to identify which engagement signals predict student success in African university contexts — and designing a privacy-conscious dashboard framework built for African infrastructure and cultural realities. Co-authored with Nthabiseng Thema and Gentille Uwera; supervised by Dr. Thomas McManus.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.4rem;">
+          <div class="pcard-result" style="border-color:#a78bfa;color:#a78bfa;background:rgba(167,139,250,0.06);">→ System nav r = 0.605 — strongest completion predictor</div>
+          <div class="pcard-result" style="border-color:var(--amber);color:var(--amber);background:rgba(255,170,0,0.06);">→ k-means (k=3): Low tier = 48.6% of 742 students, 15% completion</div>
+          <div class="pcard-result" style="border-color:var(--blue);color:var(--blue);background:rgba(0,170,255,0.06);">→ Content access (4.1×) &amp; forum (5.4×) differentiate tiers more than quiz volume</div>
+        </div>
+        <div class="pcard-tags">
+          <span class="ptag">Python</span><span class="ptag">Pandas</span><span class="ptag">k-Means Clustering</span>
+          <span class="ptag">Pearson Correlation</span><span class="ptag">Moodle LMS</span>
+          <span class="ptag">Learning Analytics</span><span class="ptag">POPIA / GDPR</span><span class="ptag">EdTech</span>
+          <span class="ptag">CMU Africa</span>
+        </div>
+        <div style="display:flex;gap:1.5rem;margin-top:0.5rem;">
+          <a href="#" class="pcard-link">read_report() →</a>
+          <a href="#" class="pcard-link" style="color:var(--grey);">github ↗</a>
+        </div>
+      </div>
+
+      <div class="pcard featured reveal" data-cat="data">
+        <div class="pcard-num">// 02</div>
+        <div class="pcard-cat cat-data">Data Analytics</div>
+        <div class="pcard-title">Maternal Mortality Comparative Analysis — 32 African Nations</div>
+        <p class="pcard-desc">Python-based workflow investigating maternal mortality disparities across West and East Africa using UN Statistics Division datasets. Automated cleaning and normalization of socioeconomic indicators with Pandas; built a longitudinal research dataset spanning 2010–2015.</p>
+        <div class="pcard-result">→ Welch's T-test: p = 0.063 — high regional variability is the primary outcome driver</div>
+        <div class="pcard-tags">
+          <span class="ptag">Python</span><span class="ptag">Pandas</span><span class="ptag">NumPy</span><span class="ptag">Welch's T-test</span><span class="ptag">UN Data</span>
+        </div>
+        <a href="#" class="pcard-link">view_project() →</a>
+      </div>
+
+      <div class="pcard reveal" data-cat="ml" style="transition-delay:0.1s">
+        <div class="pcard-num">// 03</div>
+        <div class="pcard-cat cat-ml">Applied ML</div>
+        <div class="pcard-title">Life Expectancy Prediction — WHO Global Data</div>
+        <p class="pcard-desc">Ensemble ML models predicting country-level life expectancy from WHO data. Feature engineering across socioeconomic and health indicators, validated across income groups.</p>
+        <div class="pcard-result">→ R² > 0.90 — strong accuracy across diverse populations</div>
+        <div class="pcard-tags">
+          <span class="ptag">Scikit-learn</span><span class="ptag">Ensemble</span><span class="ptag">WHO Data</span>
+        </div>
+        <a href="#" class="pcard-link">view_project() →</a>
+      </div>
+
+      <div class="pcard reveal" data-cat="ml" style="transition-delay:0.15s">
+        <div class="pcard-num">// 04</div>
+        <div class="pcard-cat cat-ml">Applied ML · XAI</div>
+        <div class="pcard-title">Loan Approval with Fairness Analysis (SHAP)</div>
+        <p class="pcard-desc">Classification models for loan approval with SHAP explainability to detect demographic bias — ensuring predictions are accurate and equitable. A direct application of responsible AI principles.</p>
+        <div class="pcard-result">→ 80%+ accuracy · SHAP revealed fairness-critical features</div>
+        <div class="pcard-tags">
+          <span class="ptag">Scikit-learn</span><span class="ptag">SHAP</span><span class="ptag">XAI</span><span class="ptag">Bias Detection</span>
+        </div>
+        <a href="#" class="pcard-link">view_project() →</a>
+      </div>
+
+      <div class="pcard reveal" data-cat="data" style="transition-delay:0.05s">
+        <div class="pcard-num">// 05</div>
+        <div class="pcard-cat cat-data">Statistical Inference</div>
+        <div class="pcard-title">Ireland Electricity Grid — Renewable Demand</div>
+        <p class="pcard-desc">Time series analysis and hypothesis testing on Irish electricity grid data to study renewable energy demand patterns. ADF stationarity tests and seasonal decomposition.</p>
+        <div class="pcard-result">→ Significant demand shifts tied to renewable adoption cycles</div>
+        <div class="pcard-tags">
+          <span class="ptag">StatsModels</span><span class="ptag">SciPy</span><span class="ptag">Time Series</span><span class="ptag">ADF</span>
+        </div>
+        <a href="#" class="pcard-link">view_project() →</a>
+      </div>
+
+      <div class="pcard reveal" data-cat="comm" style="transition-delay:0.1s">
+        <div class="pcard-num">// 06</div>
+        <div class="pcard-cat cat-comm">Community Data</div>
+        <div class="pcard-title">Namonsa Community Demographic Analysis — Ghana</div>
+        <p class="pcard-desc">Field-based data collection and needs assessment in Namonsa, Builsa North District. Visualized demographic datasets; submitted data-backed proposals to the District Assembly for resource allocation.</p>
+        <div class="pcard-result">→ Proposals adopted by Builsa North District Office</div>
+        <div class="pcard-tags">
+          <span class="ptag">Needs Assessment</span><span class="ptag">Data Collection</span><span class="ptag">Policy Brief</span>
+        </div>
+        <a href="#" class="pcard-link">view_project() →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- IMPACT -->
+<div id="impact">
+  <div class="inner">
+    <div class="section" style="padding-bottom:0">
+      <div class="sec-label">social_impact</div>
+      <h2 class="sec-title">Beyond <span>the code</span></h2>
+      <p class="sec-sub">Five years of using technology as a tool for equity across Ghana.</p>
+    </div>
+
+    <div class="section impact-2col" style="padding-top:3rem">
+      <div class="impact-left reveal">
+        <div class="big-num">5+</div>
+        <div class="big-label">years of<br/>community work</div>
+        <div style="margin-top:3rem;display:flex;flex-direction:column;gap:1.5rem;">
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--green);line-height:1;">3,000+</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--grey2);letter-spacing:0.1em;text-transform:uppercase;">students reached</div>
+          </div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--green);line-height:1;">2</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--grey2);letter-spacing:0.1em;text-transform:uppercase;">districts served</div>
+          </div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--green);line-height:1;">2</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--grey2);letter-spacing:0.1em;text-transform:uppercase;">district proposals adopted</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="impact-list reveal" style="transition-delay:0.1s">
+        <div class="iitem">
+          <div class="iitem-year">2023–24</div>
+          <div>
+            <div class="iitem-title">Mathematics Teacher — Sombo Senior High School, Upper West</div>
+            <p class="iitem-desc">Taught Mathematics at Sombo SHS under Lead For Ghana's Alumni Teacher program, deeply engaged in community development and student upliftment in a rural, under-resourced setting.</p>
+            <span class="iitem-badge">Lead For Ghana · Alumni Teacher</span>
+          </div>
+        </div>
+        <div class="iitem">
+          <div class="iitem-year">2023</div>
+          <div>
+            <div class="iitem-title">STEM Facilitator — Literacy in Northern Ghana, Tamale</div>
+            <p class="iitem-desc">Facilitated hands-on STEM sessions using Merge Edu VR, Microbit, STEMPUNK sensors, and Microsoft MakeCode — making programming and science tangible for first-time tech users.</p>
+            <span class="iitem-badge">VR + IoT · Schools across Tamale</span>
+          </div>
+        </div>
+        <div class="iitem">
+          <div class="iitem-year">2021–23</div>
+          <div>
+            <div class="iitem-title">ICT Teaching Fellow — Dakpema M/A JHS, Tamale</div>
+            <p class="iitem-desc">Taught ICT to JHS 2 & 3 students, ran practical lab sessions, founded a Digital Literacy Club, introduced Microbit programming, and provided technical support and community outreach for 3 years.</p>
+            <span class="iitem-badge">Lead For Ghana · 3 years</span>
+          </div>
+        </div>
+        <div class="iitem">
+          <div class="iitem-year">2017–18</div>
+          <div>
+            <div class="iitem-title">Field Research — Namonsa Community, Builsa North, Upper East</div>
+            <p class="iitem-desc">Led two consecutive community profiling exercises using needs assessment, transect walks, and data collection — producing proposals submitted to Builsa North District Assembly.</p>
+            <span class="iitem-badge">UDS · 2 district proposals</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="sec-label">credentials</div>
+  <h2 class="sec-title">Certifications &amp; <span>Training</span></h2>
+  <div class="cert-grid reveal">
+    <div class="ctile"><div class="ctile-icon">🛡️</div><div class="ctile-name">Associate Cybersecurity Operations</div><div class="ctile-org">GI-KACE · Ghana-Indian Kofi Annan Centre</div></div>
+    <div class="ctile"><div class="ctile-icon">🔐</div><div class="ctile-name">MasterCard Cybersecurity Simulation</div><div class="ctile-org">Forage</div></div>
+    <div class="ctile"><div class="ctile-icon">🐍</div><div class="ctile-name">Data Science with Python</div><div class="ctile-org">Cosmos · Online</div></div>
+    <div class="ctile"><div class="ctile-icon">🤖</div><div class="ctile-name">Introduction to Artificial Intelligence</div><div class="ctile-org">Team4Tech</div></div>
+    <div class="ctile"><div class="ctile-icon">💡</div><div class="ctile-name">Enterprise Design Thinking Practitioner</div><div class="ctile-org">IBM</div></div>
+    <div class="ctile"><div class="ctile-icon">🖥️</div><div class="ctile-name">IT Support Professional Certificate</div><div class="ctile-org">Google / Coursera</div></div>
+    <div class="ctile"><div class="ctile-icon">📱</div><div class="ctile-name">Digital Fluency</div><div class="ctile-org">Team4Tech</div></div>
+    <div class="ctile"><div class="ctile-icon">📚</div><div class="ctile-name">Learning Analytics Fundamentals</div><div class="ctile-org">ILO International Training Centre</div></div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-inner reveal">
+    <div class="sec-label" style="justify-content:center;">contact.init()</div>
+    <div class="contact-headline">
+      Let's<br/><span>build</span><br/>together.
+    </div>
+    <p class="contact-sub">Open to research collaborations, internships,<br/>cybersecurity roles, and ML consulting.</p>
+    <div class="contact-block">
+      <div class="contact-line">
+        <span class="cl-key">email_1 →</span>
+        <a href="mailto:abubakam@andrew.cmu.edu" class="cl-val em">abubakam@andrew.cmu.edu</a>
+      </div>
+      <div class="contact-line">
+        <span class="cl-key">email_2 →</span>
+        <a href="mailto:msadic53@gmail.com" class="cl-val">msadic53@gmail.com</a>
+      </div>
+      <div class="contact-line">
+        <span class="cl-key">phone_1 →</span>
+        <span class="cl-val">(+250) 796 892 739</span>
+      </div>
+      <div class="contact-line">
+        <span class="cl-key">phone_2 →</span>
+        <span class="cl-val">+233 543 446 519</span>
+      </div>
+      <div class="contact-socials">
+        <a href="https://www.linkedin.com/in/mohammed-abubakari-sadic-689592219/" target="_blank" class="csoc">LinkedIn ↗</a>
+        <a href="#" class="csoc">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Mohammed Abubakari Sadic · CMU Africa</span>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    available for opportunities
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Skill bars — animate when visible
+const barObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.sbar-fill').forEach(b => b.classList.add('loaded'));
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-group').forEach(g => barObs.observe(g));
+
+// Project filter
+function fp(cat, btn) {
+  document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pcard').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>
